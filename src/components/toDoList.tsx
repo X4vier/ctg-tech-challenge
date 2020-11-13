@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAllTodDos } from "api";
 import { ToDo } from "types";
 import { ToDoItem } from "./toDoItem";
+import { NewToDoButton } from "./newToDoButton";
 
 const ToDoList = () => {
   const [toDos, setToDos] = useState<Array<ToDo>>([]);
@@ -16,8 +17,9 @@ const ToDoList = () => {
 
   return (
     <>
-      {toDos.map(({ body, title }) => (
-        <ToDoItem title={title} body={body} />
+      <NewToDoButton />
+      {toDos.map(({ body, title, $loki }) => (
+        <ToDoItem title={title} body={body} id={$loki} key={$loki} />
       ))}
     </>
   );

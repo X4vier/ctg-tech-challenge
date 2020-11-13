@@ -1,13 +1,23 @@
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
+import { markToDoComplete } from "api";
 interface Props {
   title: string;
   body: string;
+  id: number;
 }
 
-const ToDoItem = ({ title, body }: Props) => {
+const ToDoItem = ({ title, body, id }: Props) => {
   const [completed, setCompleted] = useState(false);
+
+  useEffect(() => {
+    if (completed) {
+      markToDoComplete(id).then((result) => {
+        if (!result) setCompleted(false);
+      });
+    }
+  }, [completed]);
 
   return (
     <div style={styles.outerContainer}>
@@ -15,7 +25,7 @@ const ToDoItem = ({ title, body }: Props) => {
         <h3 style={styles.title}>{title}</h3>
         <p style={styles.body}>{body}</p>
       </div>
-      <button style={styles.button} onClick={() => setCompleted(!completed)}>
+      <button style={styles.button} onClick={() => setCompleted(true)}>
         <FontAwesomeIcon
           icon={completed ? faCheckSquare : faSquare}
           style={styles.icon}
