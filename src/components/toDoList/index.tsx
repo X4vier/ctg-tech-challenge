@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import { getAllTodDos } from "api";
 import { ToDo } from "types";
 import { ToDoItem } from "./toDoItem";
-import { ToDoEditor } from "../toDoEditor";
-import { atLeastOneToDoChanged } from "../../utils";
+import { ToDoEditor } from "components";
+import {
+  atLeastOneToDoChanged,
+  removeToDosCompletedMoreThan5MinutesAgo,
+  sortToDos,
+} from "utils";
 
-const FIVE_MINUTES_IN_MILLISECONDS = 1000 * 60 * 5;
-const TEN_SECONDS_IN_MILLISECONDS = 1000 * 10;
+const TEN_SECONDS_IN_MILLISECONDS = 10 * 1000;
 
 const ToDoList = () => {
   const [toDos, setToDos] = useState<Array<ToDo>>([]);
@@ -30,8 +33,9 @@ const ToDoList = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const activeToDos = filterOutCompletedMoreThan5MinutesAgo(toDos);
+  const activeToDos = removeToDosCompletedMoreThan5MinutesAgo(toDos);
   const sortedActiveToDos = sortToDos(activeToDos);
+
   return (
     <>
       <ToDoEditor
@@ -52,21 +56,4 @@ const ToDoList = () => {
   );
 };
 
-const filterOutCompletedMoreThan5MinutesAgo = (toDos: ToDo[]) =>
-  toDos.filter(
-    (toDo) =>
-      !toDo.deletedAt ||
-      new Date().getTime() - new Date(toDo.deletedAt).getTime() <=
-        FIVE_MINUTES_IN_MILLISECONDS
-  );
-
-const sortToDos = (toDos: ToDo[]) =>
-  toDos
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    .sort((a, b) =>
-      a.deletedAt ? (b.deletedAt ? 0 : 1) : b.deletedAt ? -1 : 0
-    );
 export { ToDoList };

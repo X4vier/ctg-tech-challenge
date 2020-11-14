@@ -2,7 +2,7 @@ import React, { CSSProperties, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 import { markToDoComplete } from "api";
-import { timeAgo } from "../../utils";
+import { timeAgo } from "utils";
 
 interface Props {
   title: string;
