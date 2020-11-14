@@ -28,7 +28,19 @@ const NewToDoForm = ({ onClose, toDoCreatedCallback }: Props) => {
 
   return (
     <div style={styles.outerContainer}>
-      <form style={styles.newToDo}>
+      <form
+        style={styles.newToDo}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            onSubmit();
+          }
+        }}
+        onKeyUp={(e) => {
+          if (e.key === "Escape") {
+            onClose();
+          }
+        }}
+      >
         <input
           value={title}
           style={styles.title}
@@ -40,11 +52,6 @@ const NewToDoForm = ({ onClose, toDoCreatedCallback }: Props) => {
           style={styles.body}
           onChange={(e) => setBody(e.target.value)}
           placeholder={"What needs to be done?"}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              onSubmit();
-            }
-          }}
         />
       </form>
       <div
@@ -87,13 +94,12 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
+    margin: 0,
+    padding: 0,
   },
   icon: {
     width: 35,
     height: 35,
-    marginTop: 5,
-    marginBottom: 5,
   },
   title: {
     fontWeight: "bold",
@@ -112,7 +118,12 @@ const styles: Record<string, CSSProperties> = {
     border: "none",
     outline: "none",
   },
-  button: { outline: "none", background: "transparent", border: "none" },
+  button: {
+    outline: "none",
+    background: "transparent",
+    border: "none",
+    margin: "none",
+  },
 };
 
 export { NewToDoForm };

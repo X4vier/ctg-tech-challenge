@@ -66,7 +66,9 @@ const styles: Record<string, CSSProperties> = {
     backgroundColor: "#34b7eb",
     padding: 20,
     borderRadius: 10,
-    margin: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 20,
   },
   title: {
     fontWeight: "bold",

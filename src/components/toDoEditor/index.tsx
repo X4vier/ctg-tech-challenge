@@ -10,7 +10,16 @@ const ToDoEditor = ({ toDoCreatedCallback }: Props) => {
   const [editorVisible, setEditorVisible] = useState(false);
 
   return (
-    <div>
+    <div
+      style={{
+        height: 110,
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
+        margin: 0,
+        padding: 0,
+      }}
+    >
       {editorVisible ? (
         <NewToDoForm
           onClose={() => setEditorVisible(false)}

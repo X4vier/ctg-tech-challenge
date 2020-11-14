@@ -19,7 +19,7 @@ const styles: Record<string, CSSProperties> = {
     backgroundColor: "#42f57b",
     outline: "none",
     border: "none",
-    margin: 10,
+    marginBottom: 20,
     padding: 10,
     borderRadius: 10,
     cursor: "pointer",
