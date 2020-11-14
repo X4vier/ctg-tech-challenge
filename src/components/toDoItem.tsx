@@ -2,19 +2,36 @@ import React, { CSSProperties, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckSquare, faSquare } from "@fortawesome/free-regular-svg-icons";
 import { markToDoComplete } from "api";
+import { timeAgo } from "../utils";
+
 interface Props {
   title: string;
   body: string;
+  createdAt: Date;
+  deletedAt: Date | null;
   id: number;
+  refreshData: () => void;
 }
 
-const ToDoItem = ({ title, body, id }: Props) => {
-  const [completed, setCompleted] = useState(false);
+const ToDoItem = ({
+  title,
+  body,
+  id,
+  deletedAt,
+  createdAt,
+  refreshData,
+}: Props) => {
+  const [completed, setCompleted] = useState(Boolean(deletedAt));
 
   useEffect(() => {
     if (completed) {
       markToDoComplete(id).then((result) => {
-        if (!result) setCompleted(false);
+        if (!result) {
+          setCompleted(false);
+          alert("There was a problem connecting to ToDo servers");
+        } else {
+          refreshData();
+        }
       });
     }
   }, [completed]);
@@ -22,6 +39,9 @@ const ToDoItem = ({ title, body, id }: Props) => {
   return (
     <div style={styles.outerContainer}>
       <div style={{ opacity: completed ? 0.5 : 1, ...styles.toDoCard }}>
+        <div style={{ width: "100%", height: "100%", position: "relative" }}>
+          <p style={styles.time}>{timeAgo.format(new Date(createdAt))}</p>
+        </div>
         <h3 style={styles.title}>{title}</h3>
         <p style={styles.body}>{body}</p>
       </div>
@@ -46,6 +66,7 @@ const styles: Record<string, CSSProperties> = {
     backgroundColor: "#34b7eb",
     padding: 20,
     borderRadius: 10,
+    margin: 10,
   },
   title: {
     fontWeight: "bold",
@@ -54,7 +75,7 @@ const styles: Record<string, CSSProperties> = {
     margin: 0,
   },
   body: {
-    fontSize: 14,
+    fontSize: 16,
     padding: 0,
     margin: 0,
   },
@@ -68,6 +89,12 @@ const styles: Record<string, CSSProperties> = {
     border: "none",
     outline: "none",
     margin: 20,
+  },
+  time: {
+    top: -30,
+    right: -10,
+    position: "absolute",
+    fontSize: 14,
   },
 };
 

@@ -1,23 +1,18 @@
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
-import { NewToDoForm } from "./newToDoForm";
-const NewToDoButton = () => {
-  const [editorVisible, setEditorVisible] = useState(false);
 
-  return (
-    <div>
-      {editorVisible ? (
-        <NewToDoForm />
-      ) : (
-        <button style={styles.button} onClick={() => setEditorVisible(true)}>
-          {"Create new to-do "}
-          <FontAwesomeIcon icon={faPlusSquare} style={styles.icon} />
-        </button>
-      )}
-    </div>
-  );
-};
+interface Props {
+  onClick: () => void;
+}
+
+const NewToDoButton = ({ onClick }: Props) => (
+  <button style={styles.button} onClick={onClick}>
+    {"Create new to-do "}
+    <FontAwesomeIcon icon={faPlusSquare} style={styles.icon} />
+  </button>
+);
 
 const styles: Record<string, CSSProperties> = {
   button: {
@@ -36,6 +31,7 @@ const styles: Record<string, CSSProperties> = {
   icon: {
     width: 40,
     height: 40,
+    marginLeft: 10,
   },
 };
 

@@ -2,13 +2,33 @@ import React, { CSSProperties, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { createNewToDo } from "api";
+import { ToDo } from "types";
 
-const NewToDoForm = () => {
+interface Props {
+  onClose: () => void;
+  toDoCreatedCallback: (toDo: ToDo) => void;
+}
+
+const NewToDoForm = ({ onClose, toDoCreatedCallback }: Props) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+
+  const onSubmit = () => {
+    if (title && body) {
+      createNewToDo(title, body).then((toDo) => {
+        if (toDo) {
+          toDoCreatedCallback(toDo);
+        } else {
+          alert("There was an error connecting to the ToDo server");
+        }
+      });
+    }
+  };
+
   return (
     <div style={styles.outerContainer}>
-      <div style={styles.newToDo}>
+      <form style={styles.newToDo}>
         <input
           value={title}
           style={styles.title}
@@ -20,8 +40,13 @@ const NewToDoForm = () => {
           style={styles.body}
           onChange={(e) => setBody(e.target.value)}
           placeholder={"What needs to be done?"}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onSubmit();
+            }
+          }}
         />
-      </div>
+      </form>
       <div
         style={{
           display: "flex",
@@ -31,10 +56,17 @@ const NewToDoForm = () => {
           justifyContent: "center",
         }}
       >
-        <button style={styles.button}>
+        <button style={styles.button} onClick={onSubmit}>
           <FontAwesomeIcon icon={faCheck} style={styles.icon} />
         </button>
-        <button style={styles.button}>
+        <button
+          style={styles.button}
+          onClick={() => {
+            setBody("");
+            setTitle("");
+            onClose();
+          }}
+        >
           <FontAwesomeIcon icon={faTimes} style={styles.icon} />
         </button>
       </div>
@@ -56,7 +88,6 @@ const styles: Record<string, CSSProperties> = {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
-    marginBottom: 10,
   },
   icon: {
     width: 35,
