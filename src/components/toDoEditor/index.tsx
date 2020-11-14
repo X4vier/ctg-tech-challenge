@@ -6,7 +6,7 @@ interface Props {
   toDoCreatedCallback: (toDo: ToDo) => void;
 }
 
-const NewToDoEditor = ({ toDoCreatedCallback }: Props) => {
+const ToDoEditor = ({ toDoCreatedCallback }: Props) => {
   const [editorVisible, setEditorVisible] = useState(false);
 
   return (
@@ -26,4 +26,4 @@ const NewToDoEditor = ({ toDoCreatedCallback }: Props) => {
   );
 };
 
-export { NewToDoEditor };
+export { ToDoEditor };

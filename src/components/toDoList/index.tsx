@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { getAllTodDos } from "api";
 import { ToDo } from "types";
 import { ToDoItem } from "./toDoItem";
-import { NewToDoEditor } from "./newToDoEditor";
-import { atLeastOneToDoChanged } from "../utils";
+import { ToDoEditor } from "../toDoEditor";
+import { atLeastOneToDoChanged } from "../../utils";
 
 const FIVE_MINUTES_IN_MILLISECONDS = 1000 * 60 * 5;
 const TEN_SECONDS_IN_MILLISECONDS = 1000 * 10;
@@ -34,7 +34,7 @@ const ToDoList = () => {
   const sortedActiveToDos = sortToDos(activeToDos);
   return (
     <>
-      <NewToDoEditor
+      <ToDoEditor
         toDoCreatedCallback={(newToDo: ToDo) => setToDos([newToDo, ...toDos])}
       />
       {sortedActiveToDos.map(({ body, title, $loki, createdAt, deletedAt }) => (
